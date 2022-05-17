@@ -1,13 +1,14 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-const jest = require('jest');
+// const jest = require('jest');
 
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
 
 const htmlTemplate = require('./src/generateHTML');
-const { off } = require('process');
+// const { off } = require('process');
+// const Employee = require('./lib/Employee');
 // const htmlCreate = require('./dist/team.html')
 
 const employees = [];
@@ -34,7 +35,7 @@ const managerQs = [
         message: "Manager Office Number:",
         name: "officeNumber"
     },
-]
+];
 
 const internQs = [
     {
@@ -57,7 +58,7 @@ const internQs = [
         message: "Intern School:",
         name: "school"
     },
-]
+];
 
 const engineerQs = [
     {
@@ -80,7 +81,7 @@ const engineerQs = [
         message: "Engineer Github:",
         name: "github"
     },
-]
+];
 
 const nextStep = [
     {
@@ -93,9 +94,9 @@ const nextStep = [
         ],
         name: "nextStep"
     }
-]
+];
 
-const init = (role) => inquirer(role);
+const init = (role) => inquire(role);
 
 // MORE ABOUT SWITCH CASES: https://www.w3schools.com/js/js_switch.asp
 async function inquire(role) {
@@ -109,17 +110,17 @@ async function inquire(role) {
         case 'Intern':
             questions = internQs;
             break;
-    }
+    };
 
     const answers = await inquirer
         .prompt(questions)
         .then((answers) => {
-            createEmployee(role, answers);
-            nextStep();
-        })
-}
+            createEmployeeObject(role, answers);
+            promptNextStep();
+        });
+};
 
-const createEmployee = (role, answers) => {
+const createEmployeeObject = (role, answers) => {
     // break separate variables
     const { name, id, email, officeNumber, school, github } = answers;
 
@@ -134,8 +135,27 @@ const createEmployee = (role, answers) => {
         case 'Engineer':
             employees.push(new Engineer(name, id, email, github));
             break;
-    }
-}
+    };
+};
+
+async function promptNextStep() {
+    const answers = await inquirer
+        .prompt(nextStep)
+        .then((answers) => {
+            switch(answers.nextStep) {
+                case 'Add an Engineer':
+                    role = 'Engineer';
+                    inquire(role);
+                    break;
+                case 'Add an Intern':
+                    role = 'Intern';
+                    inquire(role);
+                    break;
+                case 'All done! Please generate my page <3':
+                    writeFile(htmlTemplate(employees))
+            };
+        });
+};
 // ask for manager info 
     // prompt user for data
         // THEN create and store an object for Manager
@@ -175,3 +195,4 @@ const createEmployee = (role, answers) => {
                 // email
                 // github
         
+init('Manager');
