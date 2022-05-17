@@ -1,34 +1,141 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const jest = require('jest');
 
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
 
+const htmlTemplate = require('./src/generateHTML');
+const { off } = require('process');
+// const htmlCreate = require('./dist/team.html')
 
 const employees = [];
-const createTeam = require('./dist/team.html')
 
-const questions = [
-    // console log "Welcome! Enter the information to build your team "
 
-    // INPUT manager name 
-    // INPUT manager id
-    // INPUT manager email
-    // INPUT manager office number
-
-    // LIST which type of team member would you like to add?
-    // ENGINEER
-    // INTERN
-    // I don't want to add anyone else 
-
-    // if add engineer:
-    // name, id, email, github username
-
-    // if add intern:
-    // name, id, email, school
+const managerQs = [
+    {
+        type: "input",
+        message: "Manager name:",
+        name: "name"
+    },
+    {
+        type: "input",
+        message: "Manager ID:",
+        name: "id"
+    },
+    {
+        type: "input",
+        message: "Manager Email:",
+        name: "email"
+    },
+    {
+        type: "input",
+        message: "Manager Office Number:",
+        name: "officeNumber"
+    },
 ]
 
+const internQs = [
+    {
+        type: "input",
+        message: "Intern name:",
+        name: "name"
+    },
+    {
+        type: "input",
+        message: "Intern ID:",
+        name: "id"
+    },
+    {
+        type: "input",
+        message: "Intern Email:",
+        name: "email"
+    },
+    {
+        type: "input",
+        message: "Intern School:",
+        name: "school"
+    },
+]
+
+const engineerQs = [
+    {
+        type: "input",
+        message: "Engineer name:",
+        name: "name"
+    },
+    {
+        type: "input",
+        message: "Engineer ID:",
+        name: "id"
+    },
+    {
+        type: "input",
+        message: "Engineer Email:",
+        name: "email"
+    },
+    {
+        type: "input",
+        message: "Engineer Github:",
+        name: "github"
+    },
+]
+
+const nextStep = [
+    {
+        type: "list",
+        message: "What would you like to do next?",
+        choices: [
+            "Add an Engineer",
+            "Add an Intern",
+            "All done! Please generate my page <3"
+        ],
+        name: "nextStep"
+    }
+]
+
+const init = (role) => inquirer(role);
+
+// MORE ABOUT SWITCH CASES: https://www.w3schools.com/js/js_switch.asp
+async function inquire(role) {
+    switch(role) {
+        case 'Manager':
+            questions = managerQs;
+            break;
+        case 'Engineer':
+            questions = engineerQs;
+            break;
+        case 'Intern':
+            questions = internQs;
+            break;
+    }
+
+    const answers = await inquirer
+        .prompt(questions)
+        .then((answers) => {
+            createEmployee(role, answers);
+            nextStep();
+        })
+}
+
+const createEmployee = (role, answers) => {
+    // break separate variables
+    const { name, id, email, officeNumber, school, github } = answers;
+
+    // rebuild based on chosen role
+    switch(role) {
+        case 'Manager':
+            employees.push(new Manager(name, id, email, officeNumber));
+            break;
+        case 'Intern':
+            employees.push(new Intern(name, id, email, school));
+            break;
+        case 'Engineer':
+            employees.push(new Engineer(name, id, email, github));
+            break;
+    }
+}
 // ask for manager info 
     // prompt user for data
         // THEN create and store an object for Manager

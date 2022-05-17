@@ -8,5 +8,9 @@ Users (one team manager) can generate a static HTML page with their team's infor
 
 ## Resources
 [TDD: what is it and what is it not](https://www.freecodecamp.org/news/test-driven-development-what-it-is-and-what-it-is-not-41fa6bca02a2/)
+<br />
+
 [Why TDD is bad and how to improve your process](https://charleeli.medium.com/why-tdd-is-bad-and-how-to-improve-your-process-d4b867274255)
+<br />
+
 [Intro to Automated Testing](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Automated_testing)
