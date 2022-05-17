@@ -1,4 +1,26 @@
-var teamCards = [];
+let teamCards = [];
+// const roleData = (employee) => {
+//     role = employee.getRole();
+//     switch (role) {
+//         case 'Manager':
+//             return `Office Phone: ${employee.getOffice()}`;
+//         case 'Intern':
+//             return `School: ${employee.getSchool()}`;
+//         case 'Engineer':
+//             return `Github: <a href="https://github.com/${employee.getGithub()}" target="_blank" rel="noopener noreferrer class="card-link">${employee.getGithub()}</a> `;
+//     }
+// }
+
+// switch case above wasn't working :') 
+function roleData(employees){
+    if (employees.getRole() === 'Manager'){
+        return `<a href="tel:${employees.getOffice()}" class="card-link">Call Me</a>`
+    } else if (employees.getRole() === 'Intern'){
+        return `<a href="https://www.google.com/search?q=${employees.getSchool()}" target="_blank" rel="noopener noreferrer" class="card-link">${employees.getSchool()}</a>`
+    } else if (employees.getRole() === 'Engineer'){
+        return `<a href="https://www.github.com/${employees.getGithub()}" target="_blank" rel="noopener noreferrer" class="card-link">${employees.getGithub()}</a>` 
+    } 
+}
 
 function htmlTemplate(employees) {
     // console.log(employees)
@@ -41,8 +63,8 @@ function cardTemplate(employees) {
                 <h5 class="card-title">${employees[i].name}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">${employees[i].role}</h6>
                 <p class="card-text">${employees[i].id}</p>
-                <a href="mailto:${employees[i].email}" class="card-link">Email</a>
-                <a href="" class="card-link">Another link</a>
+                <a href="mailto:${employees[i].email}" class="card-link">Send Email</a>
+                ${roleData(employees[i])}
             </div>
         </div>
         `

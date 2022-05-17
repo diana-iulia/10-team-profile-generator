@@ -152,10 +152,23 @@ async function promptNextStep() {
                     inquire(role);
                     break;
                 case 'All done! Please generate my page <3':
+                    const writeFile = (data => {
+                        fs.writeFile("./dist/team.html", data, (err) =>
+                            err ? console.error(err) : console.log(`
+                            -------------------------------------
+                            Congratulations! You have successfully
+                            generated your static HTML page. 
+                            Go to team.html to see it :0) 
+                            -------------------------------------
+                            `)
+                        );
+                    })
                     writeFile(htmlTemplate(employees))
             };
         });
 };
+
+
 // ask for manager info 
     // prompt user for data
         // THEN create and store an object for Manager
